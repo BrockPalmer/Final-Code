@@ -11,7 +11,7 @@ public class RateBLL {
 
 	private static RateDAL _RateDAL = new RateDAL();
 	
-	static double getRate(int GivenCreditScore) throws RateException 
+	public static double getRate(int GivenCreditScore) throws RateException 
 	{
 		double dInterestRate = 0;
 		
@@ -28,13 +28,24 @@ public class RateBLL {
 		//			obviously this should be changed to return the determined rate
 		
 		ArrayList<RateDomainModel> rates = RateDAL.getAllRates();
-		
+		//for each RateDomain model in the arraylist 
+		for (RateDomainModel Rate :rates ){
+			//Filter the ArrayList...  look for the correct rate for the given credit score
+			
+			//comparing (lambda) credit score to givencredit score
+			
+			if (Rate.getiMinCreditScore()<= GivenCreditScore){
+				
+				dInterestRate = Rate.getdInterestRate();
+			}
+			if(dInterestRate==0){
+				RateDomainModel rate1= new RateDomainModel();
+				rate1.setiMinCreditScore(GivenCreditScore);
+				throw new RateException(rate1);
+			}
+		}
 
-		//TODO: Filter the ArrayList...  look for the correct rate for the given credit score.
-		//	Easiest way is to apply a filter using a Lambda function.
-		//
-		//	Example... how to use Lambda functions:
-		//			https://github.com/CISC181/Lambda
+	
 		
 		return dInterestRate;
 		
